@@ -3,6 +3,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Rodrigo Gamboa & Francisco Montes | May 2024
 
+% NO USAR ! ! !
+
 %-OBJECTIVE-%
 % Create and visualize a discretized loop made of N arrows, 
 % simbolizing electric current differentials, so that the whole 

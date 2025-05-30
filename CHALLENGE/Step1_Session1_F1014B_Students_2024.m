@@ -93,7 +93,7 @@ dx = zeros(1, N*nl);
 dy = zeros(1, N*nl);
 dz = zeros(1, N*nl);
 
-for i = 1:nl
+for I = 1:nl
 
     %Px(s:s+N-1)=R*cos(ang);           %Comment
     %Py(s:s+N-1)=R*sin(ang);           %Comment
@@ -106,7 +106,7 @@ for i = 1:nl
 
     Px(s:s+N-1)=R*cos(ang);           
     Py(s:s+N-1)=R*sin(ang);           
-    Pz(s:s+N-1)=-nl/2*sz+(i-1)*sz;    
+    Pz(s:s+N-1)=-nl/2*sz+(I-1)*sz;    
 
     dx(s:s+N-1)=-Py(s:s+N-1)*dtheta;  % dx ~ -sin → dirección tangente al círculo
     dy(s:s+N-1)=Px(s:s+N-1)*dtheta;   % dy ~ cos
@@ -115,7 +115,7 @@ for i = 1:nl
 
 end    
 
-dz(1:N*nl)=0;                          %Comment        
+dz = zeros(1, N*nl);                          %Comment        
 
 %Call figure 1
 figure(1)
@@ -149,7 +149,7 @@ dBz = zeros(Lx, Ly, Lz);   %to Lx, 1 to Ly and 1 to Lz, and
                            % objects (dBx, dBy, dBz). 
                            
                            %What do you think we are to use
-                           %this for: almacenar los componentes del campo magnético generado por cada dl en cada punto del espacio 3D
+                           %this for: almascenar los componentes del campo magnético generado por cada dl en cada punto del espacio 3D
 
 for I = 1:Lx               %Open a for loop using "I" as index, going from 1 to Lx.  
     for J = 1:Ly           %Same but for Ly, use a "J" index.
@@ -162,15 +162,18 @@ for I = 1:Lx               %Open a for loop using "I" as index, going from 1 to 
                 ry = y(J) - Py(L);     %Same but for the ry component
                 rz = z(K) - Pz(L);     %Same but for the rz component
 
-                r = sqrt(rx^2 + ry^2 + rz^2);   %Get the magnitude
+                r = sqrt(rx^2 + ry^2 + rz^2+rw^2);   %Get the magnitude
 
                 r3 = r^3;              %Declate an r3 variable
                                        %equal to the third power of r
                 
                 % Cross product dl x r = (dy*rz - dz*ry)i + (dz*rx - dx*rz)j + (dx*ry - dy*rx)k
-                dBx(I,J,K) = dBx(I,J,K) + km * (dy(L)*rz - dz(L)*ry)/r3;    %Write here the dBx(I,J,K) component
-                dBy(I,J,K) = dBy(I,J,K) + km * (dz(L)*rx - dx(L)*rz)/r3;    %Same but for the dBy(I,J,K) component  
-                dBz(I,J,K) = dBz(I,J,K) + km * (dx(L)*ry - dy(L)*rx)/r3;    %Same but for the dBz(I,J,K) component
+                % dBx(I,J,K) = dBx(I,J,K) + km * (dy(L)*rz - dz(L)*ry)/r3;    %Write here the dBx(I,J,K) component
+                % dBy(I,J,K) = dBy(I,J,K) + km * (dz(L)*rx - dx(L)*rz)/r3;    %Same but for the dBy(I,J,K) component  
+                % dBz(I,J,K) = dBz(I,J,K) + km * (dx(L)*ry - dy(L)*rx)/r3;    %Same but for the dBz(I,J,K) component
+                dBx (I,J,K) = dBx(I, J, K) + km * dy(L) * rz / r3;
+                dBy (I,J,K) = dBy(I, J, K) + km * dx(L) * rz / r3;
+                dBz (I,J,K) = dBz(I, J, K) + km * (dx(L) *ry - dy(L) * rx) / r3;
 
             end   %Close the 4th loop
 
