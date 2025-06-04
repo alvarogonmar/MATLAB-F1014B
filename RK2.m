@@ -1,17 +1,12 @@
-function yapprox = RK2()
+function yapprox = RK2(m, x0, xf, h,)
 
 % 2nd order Runge-Kutta
-y0=10
-x0=0
-xf=3
-h=1
 
 x=x0:h:xf
 y=zeros(size(x))
 y(1)=y0
 err=zeros(size(x))
 
-a2=1
 a1=1-a2
 q=1/(2*a2)
 
