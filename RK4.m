@@ -6,7 +6,7 @@ y(1)=y0;
 
 for i=1:length(x)-1
     k1=m(x(i),y(i));
-    k2=m(x(i)+q*h,y(i)+q*k1*h);
+    k2=m(x(i)+h/2,y(i)+k1*h/2);
     y(i+1)=y(i)+(a1*k1+a2*k2)*h;
 end
 yapprox = y;
