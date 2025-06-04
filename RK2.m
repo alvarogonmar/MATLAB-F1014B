@@ -24,14 +24,3 @@ for i=1:length(x)-1
     y(i+1)=y(i)+(a1*k1+a2*k2)*h;
 end
 yapprox = y;
-
-
-
-plot(x,y,'r')
-hold on
-plot(x,yexact(x),'b')
-hold off
-xlabel("x")
-ylabel("y")
-legend("2nd order Runge-Kutta","Exact")
-
