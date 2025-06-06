@@ -257,7 +257,7 @@ mag = 2000;               %Declare a variable called "mag" (Magnetic moment of t
 mag_mass = 0.004;               %Declare the Magnet´s mass in kg, use 0.004 to begin.
                 %How many grams is this_____________?
 
-w = 0.004*9.81;               %Calculate Magnet´s weigth in N, and store it in a var. called "w". Don´t 
+w = mag_mass*9.81;               %Calculate Magnet´s weigth in N, and store it in a var. called "w". Don´t 
                 %forget the sign.
 
 
@@ -433,17 +433,47 @@ axis([0 1.8 -6 6])
 
 
 %(1) What happens if the magnetic moment is zero? (run and explain).
+% if the magnetic moment is zero the magnet falss only with the gravity
+% force, just like a normal object in free fall.
 
 %(2) What happens if the mass of the magnet is set to 1 kg? (run and explain).
+% If the magnet’s mass is increased to 1 kg, the magnet will fall much
+% faster,  because the heavier the magnet, the less effect the magnetic force has on stopping it.
 
 %(3) What happens if you increase the actual value for the magnetic
 % moment one order if magnitude? (run and explain).
+% The magnet will be much more affected by the coil, so it will fall more
+% slowly or depending wich value you define, is not going to fall, its
+% going to be bouncing
 
 %(4) What happens if you decrease the mass of the magnet by one 
 % order of magnitude? (run and explain).
+% The magnet becomes much lighter, the magnet will fall much slower, it
+% takes a lot longer to reach the bottom, and again its going to be
+% bouncing
 
 %(5) How many plots are you getting at the end? Explain each in full
 %detail. Full details please!
+% We have two plots in the leff we have "Magnetic force of a Current ring over a falling magnet"
+% this plot shows how the magnetic force acts on the falling magnet as it moves up and down along the z-axis.
+% The blue curve shows how the force changes as the magnet falls. 
+% and when the magnet is near the coil (z = 0), the magnetic force is strongest.
+% and the force changes direction depending on where the magnet is.
+
+% And in the right plot we have the "Position vs time of a Magnetic dipole falling through a current ring"
+% this plot shows how the magnet’s position changes over time as it falls,
+% in the horizonta axis we have time, and in the vertical axis we have z
+% position, we have a red curve that is the path of the magnet falling with
+% the effect of the magnetic force, and we have blue curve that is the path of the magnet 
+% in free fall, with no magnetic force, just using gravity.
+
+
+
+
+
+
+
+
 
 
 
