@@ -59,3 +59,51 @@ cc = 1;       %Define a "cc" counter; set it equal to 1.
 vz = zeros(1, 1000);            %Define a vz vector; initialize its first entry to zero.
 
 figure(1);       %Call for figure(1).
+
+%--------Part 2---------% [after %Call for figure(1).]
+
+%Use [open and close] a while loop, using the zm variable vector, such that
+%you can warranty that all z values for the magnet while falling from zo to
+%JUST BEFORE passing through the coil are covered (i.e., from zm = zo to 
+%zm = 0.0162).
+
+
+%Inside the while loop, use the following (uncomment), and
+%explain what it does or will do.
+while zm(cc) > 0.0162
+    pause(0.001)     %Comment
+    clf              %Comment
+    
+
+    [x,y,phiB1,Bz]=B_due_M(zm(cc),mag,Rring);  
+
+    %What is this? Explain in full detail, take your time!
+    % The function B_due_M receives as input the current vertical position of the magnet (zm(cc)), 
+    % the magnetic moment of the magnet (mag), and the radius of the coil (Rring). 
+    % It output x and y (coordinates),
+    % phiB1 the magnetic flux through the ring, 
+    % and Bz is the z-component of the magnetic field at the center of the coil. 
+    % In simple terms, this function calculates how strong the magnetic field is
+    % and how much of it passes through the coil at the current position of the magnet. 
+
+    %Using kinematics, the same as in last week's code actually, write an
+    %expression for the zm position of the magnet, while free falling.
+
+    zm(cc+1) = zm(cc) + vz(cc)*dt - 0.5*9.81*dt^2;
+
+%Using kinematics, the same as in last week's code actually, write an
+%expression for the vz position of the magnet, while free falling.
+
+    vz(cc+1) = vz(cc) - 9.81*dt;
+
+    [x, y, phiB2, Bz] = B_due_M(zm(cc+1), mag, Rring);
+
+    %What is this? Explain in full detail, take your time!
+    % Calculate the magnetic field and magnetic flux at the new position of the magnet, after it has moved. 
+    % It takes the updated position zm(cc+1), the magnetic moment mag, and the coil radius Rring as inputs.
+    % The function returns the values for the coordinates (x and y), the new magnetic flux through the ring (phiB2),
+    % and the magnetic field along the axis (Bz). This allows us to see how the magnetic effect changes as the magnet continues to fall.
+
+   
+ % close the while loop
+end
