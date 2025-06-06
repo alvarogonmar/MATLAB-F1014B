@@ -466,9 +466,3 @@ axis([0 1.8 -6 6])
 % position, we have a red curve that is the path of the magnet falling with
 % the effect of the magnetic force, and we have blue curve that is the path of the magnet 
 % in free fall, with no magnetic force, just using gravity.
-
-
-
-
-
-
