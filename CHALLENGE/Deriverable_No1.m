@@ -185,12 +185,11 @@ zz(length(ang))=0;
 
 %Reseach and explain (in your own words), what is magnetic moment in general, 
 %and for a permanent magnet (simple equations are allowed and expected):
-%__________________________________________________________________________
-%__________________________________________________________________________
-%__________________________________________________________________________
-%__________________________________________________________________________
-%__________________________________________________________________________
-%__________________________________________________________________________
+% The magnetic moment shows how strong and which way a magnet or current loop creates a magnetic field.
+% For a current loop: magnetic moment = current × area of the loop.
+% For a permanent magnet, it depends on how its atoms are aligned.
+% A bigger magnetic moment means the magnet interacts more strongly with magnetic fields.
+
 
 
 %New code starts here!
