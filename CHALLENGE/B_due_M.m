@@ -21,48 +21,53 @@
 
 %Declare the function here, start by checking reserved word/code for
 %MatLab, to declare a function.
-
+function [x, y, phiB, Bz] = B_due_M(zm, mag, Rring)
 
 %[Reserved word for definig a function] <function call>
 
 
-%mo=4*pi*1e-7;           %Just uncomment.
-%ds=0.005;               %Uncomment and continue ahead and then go back here to comment
+mo=4*pi*1e-7;           %Just uncomment.
+ds=0.005;               %Uncomment and continue ahead and then go back here to comment
                          %on the meaning of this variable.
 
-                         ;      %Declare a x array, extending from -Rring to Rring in steps of ds.   
-;      %Declare a y array, extending from -Rring to Rring in steps of ds.
-;           %Define an array called Lx such that it has the
+x = -Rring:ds:Rring; %Declare a x array, extending from -Rring to Rring in steps of ds. 
+                                 
+y = -Rring:ds:Rring; %Declare a y array, extending from -Rring to Rring in steps of ds.
+               
+Lx = length(x);           %Define an array called Lx such that it has the
                          %same length than the array x.
 
-;           %Define an array called Ly such that it has the
+Ly = length(y);           %Define an array called Ly such that it has the
                          %same length than the array y.
 
-;        %Define a 2D matrix, or array called Bz, such that
+Bz = zeros(Lx, Ly);        %Define a 2D matrix, or array called Bz, such that
                          %it has entries from 1 to Lx and 1 to Ly, for the ith 
                          %and jth components, respectively, and initialize all 
                          %of them to zero.
 
 
-;                 %Introduce a variable called phiB, and set it
+phiB = 0;                 %Introduce a variable called phiB, and set it
                          %equal to zero.
 
 
-%for i=1:Lx          %Start a for  loop using an "i" counter going from 1 to Lx.
-    %for j=1:Ly            %Start a for  loop using a "j" counter going from 1 to Ly.
+for i=1:Lx          %Start a for  loop using an "i" counter going from 1 to Lx.
+    for j=1:Ly            %Start a for  loop using a "j" counter going from 1 to Ly.
 
-        %r=sqrt(x(i)^2+y(j)^2);       %Uncomment and comment what exactly is this?
+        r=sqrt(x(i)^2+y(j)^2);       %Uncomment and comment what exactly is this?
                                       %MAKE A DRAWING!!!
 
-        %if r<Rring                   %Why this? Comment and think!
+        if r<Rring                   %Why this? Comment and think!
 
-            %Bz(i,j) = WRITE HERE THE EQUATION FOR THE FIELD FROM CANVAS
+            Bz(i,j) = mo/(4*pi)*(3*z*(mag*z) - mag*(x(i)^2 + y(j)^2 + z^2)) / ((x(i)^2 + y(j)^2 + z^2 + (ds)^2)^(5/2)); % WRITE HERE THE EQUATION FOR THE FIELD FROM CANVAS
             % "STAGE 3: Calculation of induced fem by a magnet (dipole) free falling through a coil"
 
-            %phiB=;   %Following intructions in CANVAS, write here the
-                      %value for the B-Field Flux!
+            phiB= phiB + Bz(i, j) * ds^2;  %Following intructions in CANVAS, write here the
+                                           % value for the B-Field Flux!
 
          %Close (end) the "if".   
+        end
+    end
+end
 
     %Close the for with the "j" counter.  
 %Close the for with the "i" counter.
