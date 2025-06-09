@@ -49,14 +49,17 @@ Rring = 0.5;           %Define a "Rring" variable to define the ring
 zo = 0.1;           %Define initial position of magnet (zo). Set it equal to 0.1.
 zring = 0;           %Define ring position (use "zring" variable). Set it equal to 0.
 dt = 0.01;           %Define time step ("dt"). Set it to 0.01.
-t = zeros(1, 1000);  %Define a time vector, and initialize to zero its first
-                    %entry.
+t = zeros(1, 2000);  %Define a time vector, and initialize to zero its first
+%t(1) = 0;                    %entry.
 
-zm = zeros(1, 1000);       %Define a Z-position vector (zm), and initialize to "zo" its first
+zm = zeros(1, 2000);       %Define a Z-position vector (zm), and initialize to "zo" its first
                             %entry.
+zm(1) = zo;
+
 
 cc = 1;       %Define a "cc" counter; set it equal to 1.
-vz = zeros(1, 1000);            %Define a vz vector; initialize its first entry to zero.
+vz = zeros(1, 2000);            %Define a vz vector; initialize its first entry to zero.
+
 
 figure(1);       %Call for figure(1).
 
@@ -70,7 +73,13 @@ figure(1);       %Call for figure(1).
 
 %Inside the while loop, use the following (uncomment), and
 %explain what it does or will do.
-while zm(cc) > 0.0162
+
+while zm(cc) > -0.1% Al usar disp([cc, t(cc), zm(cc)]) zm despliega un
+% valor que ya esta cerca del limite por eso ya no avanza, le puse el nuev
+% valor -0.1 para que si avanzara
+
+%while zm(cc) > 0.0162
+
     pause(0.001)     %Comment
     clf              %Comment
     
@@ -97,6 +106,55 @@ while zm(cc) > 0.0162
     vz(cc+1) = vz(cc) - 9.81*dt;
 
     [x, y, phiB2, Bz] = B_due_M(zm(cc+1), mag, Rring);
+    
+    %Taking into account that the B_due_M function has been called 
+    %twice (why)? Calculate a vector function of fem(cc) equal to the
+    %"rate change or difference of the magnetic flux, with respect to
+    % time", associated with the area of the ring (coil or wire loop).
+
+    fem(cc) = - (phiB2 - phiB1) / dt;
+
+    %Uncomment all of the following, and explain in detals what each line 
+    %is doing.
+
+    subplot(2,2,1)
+    hold on
+    grid on
+    xlabel 'time, s'
+    ylabel 'fem, mV'
+    plot(t(1:cc),100*fem(1:cc),'-k','LineWidth',1)
+    plot(t(1:cc),100*fem(1:cc),'*r','LineWidth',2)
+    
+
+    subplot(2,2,2)
+    hold on
+    % AQUI EL AXIS ES 0.3 O 0.2?
+    axis([0 0.3 -10 10])
+    grid on
+    xlabel 'time, s'
+    ylabel 'magnet heigth, cm'
+    plot(t(1:cc),100*zm(1:cc),'ob','LineWidth',2)    
+
+    subplot(2,2,3)
+    hold on
+    pcolor(x,y,zm(cc)/abs(zm(cc))*abs(abs(0.005^2*Bz)).^(1/3)); shading interp; colormap hot; colorbar
+    view(-45,-45)
+
+    subplot(2,2,4)
+    
+    hold on
+    mesh(x,y,zm(cc)/abs(zm(cc))*abs(abs(10^2*Bz)).^(1/3)); 
+    view(-30,-3)
+    axis([-Rring Rring -Rring Rring -5 15])
+    
+    cc=cc+1;
+    t(cc)=t(cc-1)+dt;
+end   
+% close the while loop
+
+%END OF CODE !!!%
+
+
 
     %What is this? Explain in full detail, take your time!
     % Calculate the magnetic field and magnetic flux at the new position of the magnet, after it has moved. 
@@ -106,4 +164,3 @@ while zm(cc) > 0.0162
 
    
  % close the while loop
-end
