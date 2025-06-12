@@ -35,33 +35,33 @@
 
 %START% PART I
 
-clear             %Add comment, what are these for?
-clc               %Add comment
-clf               %Add comment
+clear             % Limpia todas las variables del espacio de trabajo.
+clc               %% Limpia la ventana de comandos.
+clf               % Limpia las figuras abiertas (ventanas gráficas).
 
-mag = 500;           %Define a "mag" variable to define the magnetic moment
-           %of the falling magnet, and set it equal to 500.
+mag = 500;        % Se define la variable "mag" para representar el momento magnético 
+                  % del imán que está cayendo.
 
-Rring = 0.5;           %Define a "Rring" variable to define the ring
-           %radius in m. Set it equal to 0.5.
-
-
-zo = 0.1;           %Define initial position of magnet (zo). Set it equal to 0.1.
-zring = 0;           %Define ring position (use "zring" variable). Set it equal to 0.
-dt = 0.01;           %Define time step ("dt"). Set it to 0.01.
-t = zeros(1, 2000);  %Define a time vector, and initialize to zero its first
-%t(1) = 0;                    %entry.
-
-zm = zeros(1, 2000);       %Define a Z-position vector (zm), and initialize to "zo" its first
-                            %entry.
-zm(1) = zo;
+Rring = 0.5;      % Se define el radio del anillo conductor ("Rring") en metros. 
+                  % Se le asigna un valor de 0.5 m.
 
 
-cc = 1;       %Define a "cc" counter; set it equal to 1.
-vz = zeros(1, 2000);            %Define a vz vector; initialize its first entry to zero.
+zo = 0.1;            % Se define la altura inicial desde la que cae el imán (zo). 
+zring = 0;           % Se define la posición del anillo (en z=0).
+dt = 0.01;           % Se define el paso de tiempo para la simulación como 0.01 s
+t = zeros(1, 2000);  % Se crea un vector de tiempo con 2000 posiciones, inicializado en cero.
 
 
-figure(1);       %Call for figure(1).
+zm = zeros(1, 2000);       % Vector que almacenará las posiciones del imán en z. 
+zm(1) = zo;                % Se asigna la posición inicial del imán en el primer valor del vector.
+
+
+
+cc = 1;                    % Se define un contador "cc" que llevará el número de iteraciones.
+vz = zeros(1, 2000);       % Se crea el vector de velocidades del imán (en z), iniciado en cero.
+
+
+figure(1);                 % Se abre una ventana gráfica para las visualizaciones.
 
 %--------Part 2---------% [after %Call for figure(1).]
 
@@ -74,14 +74,15 @@ figure(1);       %Call for figure(1).
 %Inside the while loop, use the following (uncomment), and
 %explain what it does or will do.
 
-while zm(cc) > -0.1% Al usar disp([cc, t(cc), zm(cc)]) zm despliega un
+%while zm(cc) > -0.2% Al usar disp([cc, t(cc), zm(cc)]) zm despliega un
 % valor que ya esta cerca del limite por eso ya no avanza, le puse el nuev
 % valor -0.1 para que si avanzara
 
-%while zm(cc) > 0.0162
+while zm(cc) > 0.0172 % hace la curva, El ciclo se ejecuta mientras el imán no haya caído más allá de 0.0172
 
-    pause(0.001)     %Comment
-    clf              %Comment
+
+    pause(0.001)     % Pausa la simulación brevemente para que se vea la animación.
+    clf              % Limpia la figura actual para actualizarla en cada iteración.
     
 
     [x,y,phiB1,Bz]=B_due_M(zm(cc),mag,Rring);  
@@ -98,21 +99,27 @@ while zm(cc) > -0.1% Al usar disp([cc, t(cc), zm(cc)]) zm despliega un
     %Using kinematics, the same as in last week's code actually, write an
     %expression for the zm position of the magnet, while free falling.
 
+    % Se usa cinemática para calcular la siguiente posición del imán
+    % mientras cae libremente, usando la fórmula: z = z0 + v0*dt - (1/2)*g*dt^2
+    % ecuación de cinemática
     zm(cc+1) = zm(cc) + vz(cc)*dt - 0.5*9.81*dt^2;
 
 %Using kinematics, the same as in last week's code actually, write an
 %expression for the vz position of the magnet, while free falling.
 
-    vz(cc+1) = vz(cc) - 9.81*dt;
 
-    [x, y, phiB2, Bz] = B_due_M(zm(cc+1), mag, Rring);
+    vz(cc+1) = vz(cc) - 9.81*dt;     % Se actualiza la velocidad con v = v0 - g*dt
+
+    [x, y, phiB2, Bz] = B_due_M(zm(cc+1), mag, Rring);      % Se vuelve a llamar a la función B_due_M con la nueva posición
+                                                            % para obtener el nuevo flujo magnético (phiB2) y campo Bz actualizado.
+
     
     %Taking into account that the B_due_M function has been called 
     %twice (why)? Calculate a vector function of fem(cc) equal to the
     %"rate change or difference of the magnetic flux, with respect to
     % time", associated with the area of the ring (coil or wire loop).
 
-    fem(cc) = - (phiB2 - phiB1) / dt;
+    fem(cc) = - (phiB2 - phiB1) / dt;       % Se calcula la fem como la derivada del flujo con respecto al tiempo
 
     %Uncomment all of the following, and explain in detals what each line 
     %is doing.
@@ -122,6 +129,7 @@ while zm(cc) > -0.1% Al usar disp([cc, t(cc), zm(cc)]) zm despliega un
     grid on
     xlabel 'time, s'
     ylabel 'fem, mV'
+    % Se grafica la fem inducida (amplificada por 100 para convertirla a mV)
     plot(t(1:cc),100*fem(1:cc),'-k','LineWidth',1)
     plot(t(1:cc),100*fem(1:cc),'*r','LineWidth',2)
     
@@ -133,10 +141,12 @@ while zm(cc) > -0.1% Al usar disp([cc, t(cc), zm(cc)]) zm despliega un
     grid on
     xlabel 'time, s'
     ylabel 'magnet heigth, cm'
+   % Se grafica la posición del imán en función del tiempo (convertido a cm)
     plot(t(1:cc),100*zm(1:cc),'ob','LineWidth',2)    
 
     subplot(2,2,3)
     hold on
+    % Mapa de colores del campo magnético en plano xy (con transformación para mejor visualización)
     pcolor(x,y,zm(cc)/abs(zm(cc))*abs(abs(0.005^2*Bz)).^(1/3)); shading interp; colormap hot; colorbar
     view(-45,-45)
 
@@ -164,3 +174,9 @@ end
 
    
  % close the while loop
+
+% Explicación adicional sobre B_due_M (segunda llamada):
+% Esta función se llama dos veces en cada iteración:
+% 1. Para calcular el flujo magnético actual (phiB1)
+% 2. Para calcular el nuevo flujo después del movimiento del imán (phiB2)
+% Así se puede aplicar la ley de Faraday para calcular la fem inducida.

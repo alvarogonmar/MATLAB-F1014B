@@ -21,14 +21,14 @@
 
 %Declare the function here, start by checking reserved word/code for
 %MatLab, to declare a function.
-function [x, y, phiB, Bz] = B_due_M(zm, mag, Rring)
+function [x, y, phiB, Bz] = B_due_M(z, mag, Rring)
 
 %[Reserved word for definig a function] <function call>
 
 
 mo=4*pi*1e-7;           %Just uncomment.
-ds=0.005;               %Uncomment and continue ahead and then go back here to comment
-                         %on the meaning of this variable.
+ds=0.005;               %cada cuadrito de la cuadrícula que cubre el área de la espira mide 0.005 metros de lado. 
+                        % Sirve para dividir el área total en pedacitos pequeños y sumar el campo magnético en cada uno.
 
 x = -Rring:ds:Rring; %Declare a x array, extending from -Rring to Rring in steps of ds. 
                                  
@@ -58,10 +58,9 @@ for i=1:Lx          %Start a for  loop using an "i" counter going from 1 to Lx.
 
         if r<Rring                   %Why this? Comment and think!
 
-            % Bz(i,j) = mo/(4*pi) * (3*zm*mag - mag*(x(i)^2 + y(j)^2 + zm^2)) / ((x(i)^2 + y(j)^2 + zm^2)^(5/2));
+            % Bz(i,j) = mo/(4*pi) * (3*z*mag - mag*(x(i)^2 + y(j)^2 + z^2)) / ((x(i)^2 + y(j)^2 + z^2)^(5/2));
+            Bz(i,j) = mo/(4*pi) * mag * (3*z^2 - (x(i)^2 + y(j)^2 + z^2)) / ((x(i)^2 + y(j)^2 + z^2)^(5/2)); % WRITE HERE THE EQUATION FOR THE FIELD FROM CANVAS
 
-            Bz(i,j) = mo/(4*pi)*(3*zm*(mag*zm) - mag*(x(i)^2 + y(j)^2 + zm^2)) / ((x(i)^2 + y(j)^2 + zm^2 + (ds)^2)^(5/2));
-            % Bz(i,j) = mo/(4*pi)*(3*zm*(mag*zm) - mag*(x(i)^2 + y(j)^2 + zm^2)) / ((x(i)^2 + y(j)^2 + zm^2)^(5/2)); % WRITE HERE THE EQUATION FOR THE FIELD FROM CANVAS
             % "STAGE 3: Calculation of induced fem by a magnet (dipole) free falling through a coil"
 
             phiB= phiB + Bz(i, j) * ds^2;  %Following intructions in CANVAS, write here the
