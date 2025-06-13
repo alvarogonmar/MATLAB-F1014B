@@ -45,18 +45,13 @@ mag = 500;        % Se define la variable "mag" para representar el momento magn
 Rring = 0.5;      % Se define el radio del anillo conductor ("Rring") en metros. 
                   % Se le asigna un valor de 0.5 m.
 
-
 zo = 0.1;            % Se define la altura inicial desde la que cae el imán (zo). 
 zring = 0;           % Se define la posición del anillo (en z=0).
 dt = 0.01;           % Se define el paso de tiempo para la simulación como 0.01 s
+
 t = zeros(1, 2000);  % Se crea un vector de tiempo con 2000 posiciones, inicializado en cero.
-
-
 zm = zeros(1, 2000);       % Vector que almacenará las posiciones del imán en z. 
 zm(1) = zo;                % Se asigna la posición inicial del imán en el primer valor del vector.
-
-
-
 cc = 1;                    % Se define un contador "cc" que llevará el número de iteraciones.
 vz = zeros(1, 2000);       % Se crea el vector de velocidades del imán (en z), iniciado en cero.
 
@@ -79,6 +74,9 @@ figure(1);                 % Se abre una ventana gráfica para las visualizacion
 % valor -0.1 para que si avanzara
 
 while zm(cc) > 0.0172 % hace la curva, El ciclo se ejecuta mientras el imán no haya caído más allá de 0.0172
+% while zm(cc) > -0.2 % Al dejar caer el imán más allá del centro (z = 0), el flujo cambia de dirección,
+                      % y según la Ley de Lenz, la fem inducida se invierte bruscamente → aparece un pico.
+
 
 
     pause(0.001)     % Pausa la simulación brevemente para que se vea la animación.
@@ -136,7 +134,6 @@ while zm(cc) > 0.0172 % hace la curva, El ciclo se ejecuta mientras el imán no 
 
     subplot(2,2,2)
     hold on
-    % AQUI EL AXIS ES 0.3 O 0.2?
     axis([0 0.3 -10 10])
     grid on
     xlabel 'time, s'
