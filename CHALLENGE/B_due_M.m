@@ -26,50 +26,38 @@ function [x, y, phiB, Bz] = B_due_M(z, mag, Rring)
 %[Reserved word for definig a function] <function call>
 
 
-mo=4*pi*1e-7;           %Just uncomment.
+mo=4*pi*1e-7;           % Constante de permeabilidad magnética del vacío (μ₀), en H/m.
 ds=0.005;               %cada cuadrito de la cuadrícula que cubre el área de la espira mide 0.005 metros de lado. 
                         % Sirve para dividir el área total en pedacitos pequeños y sumar el campo magnético en cada uno.
 
-x = -Rring:ds:Rring; %Declare a x array, extending from -Rring to Rring in steps of ds. 
-                                 
-y = -Rring:ds:Rring; %Declare a y array, extending from -Rring to Rring in steps of ds.
+x = -Rring:ds:Rring;    % Vector de coordenadas x que cubre el área de la espira                 
+y = -Rring:ds:Rring;    % Vector de coordenadas y que cubre el área de la espira
                
-Lx = length(x);           %Define an array called Lx such that it has the
-                         %same length than the array x.
+Lx = length(x);         % Número de puntos en el eje x
+Ly = length(y);         % Número de puntos en el eje y
 
-Ly = length(y);           %Define an array called Ly such that it has the
-                         %same length than the array y.
-
-Bz = zeros(Lx, Ly);        %Define a 2D matrix, or array called Bz, such that
-                         %it has entries from 1 to Lx and 1 to Ly, for the ith 
-                         %and jth components, respectively, and initialize all 
-                         %of them to zero.
+Bz = zeros(Lx, Ly);     % Inicializa una matriz Bz de ceros para guardar el campo en cada punto (x,y)
+phiB = 0;               % Inicializa el flujo magnético total en cero
 
 
-phiB = 0;                 %Introduce a variable called phiB, and set it
-                         %equal to zero.
+% Doble ciclo para recorrer todos los puntos de la cuadrícula en el plano xy
+for i=1:Lx          
+    for j=1:Ly
+
+        r=sqrt(x(i)^2+y(j)^2);       % Calcula la distancia desde el centro (radio) hasta el punto (x(i), y(j))
+                                     % Esto es necesario para saber si el punto está dentro del área circular de la espira.
+
+        if r<Rring             % Si el punto está dentro del radio de la espira, se calcula el campo Bz ahí
 
 
-for i=1:Lx          %Start a for  loop using an "i" counter going from 1 to Lx.
-    for j=1:Ly            %Start a for  loop using a "j" counter going from 1 to Ly.
-
-        r=sqrt(x(i)^2+y(j)^2);       %Uncomment and comment what exactly is this?
-                                      %MAKE A DRAWING!!!
-
-        if r<Rring                   %Why this? Comment and think!
-
-            % Bz(i,j) = mo/(4*pi) * (3*z*mag - mag*(x(i)^2 + y(j)^2 + z^2)) / ((x(i)^2 + y(j)^2 + z^2)^(5/2));
-            Bz(i,j) = mo/(4*pi) * mag * (3*z^2 - (x(i)^2 + y(j)^2 + z^2)) / ((x(i)^2 + y(j)^2 + z^2)^(5/2)); % WRITE HERE THE EQUATION FOR THE FIELD FROM CANVAS
+            % Fórmula del campo magnético vertical Bz de un dipolo en coordenadas
+            Bz(i,j) = mo/(4*pi) * mag * (3*z^2 - (x(i)^2 + y(j)^2 + z^2)) / ((x(i)^2 + y(j)^2 + z^2)^(5/2));
 
             % "STAGE 3: Calculation of induced fem by a magnet (dipole) free falling through a coil"
 
-            phiB= phiB + Bz(i, j) * ds^2;  %Following intructions in CANVAS, write here the
-                                           % value for the B-Field Flux!
+            phiB= phiB + Bz(i, j) * ds^2;  % phiB acumula el flujo magnético total (ΦB) que atraviesa la espira
+                                           % usando la suma de Bz * área en cada punto
 
-         %Close (end) the "if".   
         end
     end
 end
-
-    %Close the for with the "j" counter.  
-%Close the for with the "i" counter.
